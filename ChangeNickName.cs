@@ -8,17 +8,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SeleniumExtras.WaitHelpers;
+using OpenQA.Selenium.Interactions;
 
 namespace Tests
 {
-    public class EmailSendingFromUkrNetTest
+    public class ChangeNickName
     {
         IWebDriver driver;
-        private UkrNetDesktopPage ukrNetDesktopPage;
         private UkrNetLoginPage ukrNetLoginPage;
         WebDriverWait wait;
-        private string mainWindowHandle;
-
+        
         [SetUp]
         public void Setup()
         {
@@ -26,7 +26,7 @@ namespace Tests
             driver = DriverProvider.GetDriverFactory(browser).CreateDriver();
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             ukrNetLoginPage = new UkrNetLoginPage(driver);
-            
+
             ukrNetLoginPage.NavigateToUkrNetLoginPage();
 
             ukrNetLoginPage.LogIn();
@@ -35,12 +35,34 @@ namespace Tests
         [Test]
         public void SendEmailTest()
         {
-            ukrNetLoginPage.SendEmail();
-            bool check = ukrNetLoginPage.ConfirmationCheck();
-            Assert.IsTrue(check);
+            Actions action = new Actions(driver);
+
+            Thread.Sleep(5000);
+
+            driver.Navigate().GoToUrl("https://mail.ukr.net/desktop#settings/account");
+
+            IWebElement nickNameField = wait.Until(ExpectedConditions.ElementExists(By.XPath("//input[@name='name']")));
+
+            nickNameField.Clear();
+
+            //Console.ReadLine();
+
+            nickNameField.SendKeys("Andrii Levshakov2");
+
+            Thread.Sleep(2000);
+
+            action.SendKeys(Keys.Enter).Build().Perform();
+
+            Thread.Sleep(2000);
+
+            driver.Navigate().GoToUrl("https://mail.ukr.net/desktop#settings/account");
+
+            Thread.Sleep(2000);
+
+            IWebElement nickNameField2 = wait.Until(ExpectedConditions.ElementExists(By.XPath("//*[@value='Andrii Levshakov2']")));
         }
-        
-            [TearDown]
+
+        [TearDown]
         public void TearDown()
         {
             driver.Quit();

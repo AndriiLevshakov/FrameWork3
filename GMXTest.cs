@@ -1,8 +1,10 @@
 ﻿using Core.Configuration;
 using Core.DriverFactory;
-using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using Pages;
+using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +13,12 @@ using System.Threading.Tasks;
 
 namespace Tests
 {
-    public class EmailSendingFromUkrNetTest
+    
+    public class GMXTest
     {
         IWebDriver driver;
-        private UkrNetDesktopPage ukrNetDesktopPage;
-        private UkrNetLoginPage ukrNetLoginPage;
+        private GMXPage gmxPage;
         WebDriverWait wait;
-        private string mainWindowHandle;
 
         [SetUp]
         public void Setup()
@@ -25,22 +26,20 @@ namespace Tests
             var browser = (Drivers)Enum.Parse(typeof(Drivers), Configuration.Model.Browser);
             driver = DriverProvider.GetDriverFactory(browser).CreateDriver();
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
-            ukrNetLoginPage = new UkrNetLoginPage(driver);
-            
-            ukrNetLoginPage.NavigateToUkrNetLoginPage();
-
-            ukrNetLoginPage.LogIn();
+            gmxPage = new GMXPage(driver);
+            gmxPage.NavigateToLoginPage();
+            gmxPage.Continue();
         }
 
         [Test]
-        public void SendEmailTest()
+        public void Test()
         {
-            ukrNetLoginPage.SendEmail();
-            bool check = ukrNetLoginPage.ConfirmationCheck();
-            Assert.IsTrue(check);
+            gmxPage.Login();
+
+            Assert.IsTrue(gmxPage.EmailSend());
         }
-        
-            [TearDown]
+
+        [TearDown]
         public void TearDown()
         {
             driver.Quit();
