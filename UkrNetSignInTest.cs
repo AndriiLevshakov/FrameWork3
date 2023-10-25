@@ -2,7 +2,7 @@ using Pages;
 using NUnit.Framework;
 using Core.DriverFactory;
 using OpenQA.Selenium;
-using Core.Configuration;
+using Core.Configuration; 
 using OpenQA.Selenium.Support.UI;
 
 namespace FrameWorkHomeTaskVersion2

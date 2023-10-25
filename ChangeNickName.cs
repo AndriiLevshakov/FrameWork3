@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SeleniumExtras.WaitHelpers;
 using OpenQA.Selenium.Interactions;
-
+ 
 namespace Tests
 {
     public class ChangeNickName

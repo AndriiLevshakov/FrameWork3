@@ -20,7 +20,7 @@ namespace Tests
         private GMXPage gmxPage;
         WebDriverWait wait;
 
-        [SetUp]
+        [SetUp] 
         public void Setup()
         {
             var browser = (Drivers)Enum.Parse(typeof(Drivers), Configuration.Model.Browser);
