@@ -52,7 +52,7 @@ namespace FrameWorkHomeTaskVersion2
         [TearDown]
         public void TearDown()
         {
-            driver.Quit();
+            driver.Dispose();
         }
         
     }
